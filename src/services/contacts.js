@@ -10,9 +10,17 @@ export const getContactById = async (id) => {
   return contact;
 };
 
-export const createContact = async (payload) => {
-  const contacts = await ContactsCollection.create(payload);
-  return contacts;
+export const createContact = async (contact) => {
+  const newContact = await ContactsCollection.create(contact);
+  return newContact;
+};
+
+export const deleteContact = async (contactId) => {
+  const contact = await ContactsCollection.findByIdAndDelete({
+    _id: contactId,
+  });
+
+  return contact;
 };
 
 export const updateContact = async (contactId, payload, options = {}) => {
@@ -32,12 +40,4 @@ export const updateContact = async (contactId, payload, options = {}) => {
     contact: rawResult.value,
     isNew: Boolean(rawResult?.lastErrorObject?.upserted),
   };
-};
-
-export const deleteContact = async (contactId) => {
-  const contact = await ContactsCollection.findByIdAndDelete({
-    _id: contactId,
-  });
-
-  return contact;
 };
