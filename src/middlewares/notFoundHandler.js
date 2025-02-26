@@ -1,4 +1,6 @@
-import { NotFound } from 'http-errors';
+import createError from 'http-errors';
 
-export const notFoundHandler = (req, res, next) =>
-  next(new NotFound('Route not found'));
+export const notFoundHandler = (req, res, next) => {
+  next(createError(404, 'Route not found'));
+};
+
