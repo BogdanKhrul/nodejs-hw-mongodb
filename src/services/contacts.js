@@ -11,17 +11,10 @@ export const getContactById = async (id) => {
 };
 
 export const createContact = async (contact) => {
-  const newContact = await ContactsCollection.create(contact);
-  return newContact;
+  const contacts = await ContactsCollection.create(contact);
+  return contacts;
 };
 
-export const deleteContact = async (contactId) => {
-  const contact = await ContactsCollection.findByIdAndDelete({
-    _id: contactId,
-  });
-
-  return contact;
-};
 
 export const updateContact = async (contactId, payload, options = {}) => {
   const rawResult = await ContactsCollection.findOneAndUpdate(
@@ -41,3 +34,11 @@ export const updateContact = async (contactId, payload, options = {}) => {
     isNew: Boolean(rawResult?.lastErrorObject?.upserted),
   };
 };
+
+  export const deleteContact = async (contactId) => {
+    const contact = await ContactsCollection.findByIdAndDelete({
+      _id: contactId,
+    });
+  
+    return contact;
+  };
