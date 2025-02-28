@@ -1,6 +1,8 @@
 import { ContactsCollection } from '../db/models/contacts.js';
 import { calculatePaginationData } from '../utils/calculatePaginationData.js';
 import { SORT_ORDER } from '../constants/index.js';
+import createHttpError from 'http-errors';
+import { isValidObjectId } from 'mongoose';
 
 export const getContacts = async ({
   page = 1,
@@ -68,10 +70,17 @@ export const updateContact = async (contactId, payload, options = {}) => {
   };
 };
 
-export const deleteContact = async (contactId) => {
-  const contact = await ContactsCollection.findByIdAndDelete({
-    _id: contactId,
-  });
+// export const deleteContact = async (contactId) => {
+//   const contact = await ContactsCollection.findByIdAndDelete({
+//     _id: contactId,
+//   });
 
-  return contact;
+//   return contact;
+// };
+
+export const deleteContact = async (contactId) => {
+  if (!isValidObjectId(contactId)) {
+    throw createHttpError(400, 'Invalid ID format');
+  }
+  return await ContactsCollection.findByIdAndDelete(contactId);
 };
